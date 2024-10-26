@@ -1,4 +1,4 @@
-package com.bz.springkafka.spring_kafka;
+package com.bz.springkafka.springkafka;
 
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeAll;

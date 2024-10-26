@@ -1,4 +1,4 @@
-package com.bz.springkafka.spring_kafka;
+package com.bz.springkafka.springkafka.storage;
 
 
 import lombok.AccessLevel;
