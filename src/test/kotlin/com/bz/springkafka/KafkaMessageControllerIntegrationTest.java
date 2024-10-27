@@ -1,11 +1,11 @@
-package com.bz.springkafka.springkafka;
+package com.bz.springkafka;
 
 import io.restassured.RestAssured;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.KafkaContainer;
@@ -14,12 +14,7 @@ import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
 
-import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.when;
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("it")
 public class KafkaMessageControllerIntegrationTest {
 
     @LocalServerPort
@@ -44,7 +39,7 @@ public class KafkaMessageControllerIntegrationTest {
     public void whenSendMessage_thenGetMessageShouldBeTheSame() {
         RestAssured.port = port;
         String message = "Hello Kafka!";
-        String id = given()
+        String id = RestAssured.given()
                 .body(message)
                 .when()
                 .post("/api/messages")
@@ -53,11 +48,11 @@ public class KafkaMessageControllerIntegrationTest {
                 .extract().body().asString();
 
         Awaitility.await().atMost(Duration.ofSeconds(5)).untilAsserted(() -> {
-            String actual = when().get("/api/messages/" + id)
+            String actual = RestAssured.when().get("/api/messages/" + id)
                     .then()
                     .statusCode(200)
                     .extract().body().asString();
-            assertThat(actual).isEqualTo(message);
+            Assertions.assertThat(actual).isEqualTo(message);
         });
     }
 
