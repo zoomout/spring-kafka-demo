@@ -1,6 +1,6 @@
 # Demo Spring Boot Kafka
 
-To run
+To run and test
 
 ```
 mvn clean test
